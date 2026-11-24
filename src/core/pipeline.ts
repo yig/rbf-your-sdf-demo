@@ -33,7 +33,7 @@ export const Status = {
   Infeasible: 5,
   /** Update would have become infeasible; the previous feasible point was kept. */
   KeptPrevious: 6,
-  /** Nearly feasible on a tiny exposed region; clamped onto it. */
+  /** Missed the exposed region; clamped onto its closest point. */
   Clamped: 7,
   /** Within the de-duplication radius of another constraint; dropped. */
   Duplicate: 8,
@@ -60,7 +60,10 @@ export interface PipelineOptions {
   filterInfeasible: boolean;
   /** Never let a previously feasible projection become infeasible. */
   monotoneFeasibility: boolean;
+  /** Clamp near-misses onto tiny exposed regions from `afterIteration` on. */
   clamp: { enabled: boolean; afterIteration: number; eps: number };
+  /** Clamp every miss onto its exposed region from `afterIteration` on. */
+  clampAll: { enabled: boolean; afterIteration: number };
   /** Accept a collapsed-region candidate only if |D̃₀| < epsVal. */
   epsVal: number;
   /** Constraints closer than this to an earlier constraint are dropped. */
@@ -84,6 +87,7 @@ export function defaultOptions(scale = 1): PipelineOptions {
     filterInfeasible: true,
     monotoneFeasibility: true,
     clamp: { enabled: true, afterIteration: 7, eps: 0.1 * scale },
+    clampAll: { enabled: false, afterIteration: 7 },
     epsVal: 0.1 * scale,
     dedupRadius: 5e-4 * scale,
     feasibilityTol: 1e-4 * scale,
@@ -308,8 +312,9 @@ export function runPipeline(
         if (distance <= opts.feasibilityTol) {
           g[i] = res.g;
         } else if (
-          opts.clamp.enabled && k >= opts.clamp.afterIteration &&
-          distance < opts.clamp.eps && oracle.size(i) < opts.clamp.eps
+          (opts.clamp.enabled && k >= opts.clamp.afterIteration &&
+            distance < opts.clamp.eps && oracle.size(i) < opts.clamp.eps) ||
+          (opts.clampAll.enabled && k >= opts.clampAll.afterIteration)
         ) {
           accepted = closest;
           code = Status.Clamped;

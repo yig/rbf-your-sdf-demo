@@ -22,7 +22,7 @@ export const statusStyle: Record<number, { color: string; hollow: boolean; label
   [Status.Fixed]: { color: '#b0158c', hollow: false, label: 'fixed by collapsed exposed region' },
   [Status.Projected]: { color: '#12a150', hollow: false, label: 'projected tangent point' },
   [Status.KeptPrevious]: { color: '#12a150', hollow: true, label: 'kept previous (update infeasible)' },
-  [Status.Clamped]: { color: '#e08a00', hollow: false, label: 'clamped onto tiny exposed region' },
+  [Status.Clamped]: { color: '#e08a00', hollow: false, label: 'clamped onto exposed region' },
   [Status.Infeasible]: { color: '#888', hollow: true, label: 'culled: outside exposed region' },
   [Status.Duplicate]: { color: '#888', hollow: false, label: 'dropped: duplicate' },
 };

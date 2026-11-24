@@ -98,6 +98,7 @@
       <label class="check span2"><input type="checkbox" id="filter-infeasible" checked /> Cull projections outside the exposed arcs</label>
       <label class="check span2"><input type="checkbox" id="monotone" checked /> Keep previous feasible point instead of regressing</label>
       <label class="check span2"><input type="checkbox" id="clamp" checked /> Clamp near-misses onto tiny exposed regions (iteration ≥ 7)</label>
+      <label class="check span2"><input type="checkbox" id="clamp-all" /> Clamp all misses onto exposed regions (iteration ≥ <input type="number" id="clamp-all-iter" value="7" min="1" step="1" disabled />)</label>
       <span class="adv-head span2">Partition of unity</span>
       <label for="pu-overlap">Overlap λ</label>
       <input type="number" id="pu-overlap" value="0.25" step="0.05" min="0" />

@@ -63,6 +63,8 @@ const ui = {
   filterInfeasible: $<HTMLInputElement>('filter-infeasible'),
   monotone: $<HTMLInputElement>('monotone'),
   clamp: $<HTMLInputElement>('clamp'),
+  clampAll: $<HTMLInputElement>('clamp-all'),
+  clampAllIter: $<HTMLInputElement>('clamp-all-iter'),
   status: $('status'),
 };
 
@@ -112,6 +114,8 @@ function run(): void {
   options.filterInfeasible = ui.filterInfeasible.checked;
   options.monotoneFeasibility = ui.monotone.checked;
   options.clamp.enabled = ui.clamp.checked;
+  options.clampAll.enabled = ui.clampAll.checked;
+  ui.clampAllIter.disabled = !ui.clampAll.checked;
   if (ui.dedup.value !== '' && Number.isFinite(+ui.dedup.value)) options.dedupRadius = Math.max(0, +ui.dedup.value);
   const int = (el: HTMLInputElement, fallback: number, min: number) =>
     Math.max(min, el.value.trim() !== '' && Number.isFinite(+el.value) ? Math.round(+el.value) : fallback);
@@ -123,6 +127,7 @@ function run(): void {
     minPatchPoints: int(ui.puMin, 0, 0),
     rankRepair: ui.puRepair.checked,
   };
+  options.clampAll.afterIteration = int(ui.clampAllIter, 7, 1);
   pipeline.run(shape, {
     domain: DOMAIN,
     sampling,
@@ -179,7 +184,7 @@ ui.upload.addEventListener('change', async () => {
 });
 for (const r of document.querySelectorAll<HTMLInputElement>('input[name=sampling]')) r.addEventListener('change', () => runSoon(0));
 for (const el of [ui.gridN, ui.count, ui.iters]) el.addEventListener('input', () => runSoon());
-for (const el of [ui.seed, ui.kernel, ui.descentIters, ui.epsDegen, ui.dedup, ui.useRegions, ui.usePU, ui.puOverlap, ui.puLeaf, ui.puPatch, ui.puMin, ui.puRepair, ui.deferIsolated, ui.filterInfeasible, ui.monotone, ui.clamp]) {
+for (const el of [ui.seed, ui.kernel, ui.descentIters, ui.epsDegen, ui.dedup, ui.useRegions, ui.usePU, ui.puOverlap, ui.puLeaf, ui.puPatch, ui.puMin, ui.puRepair, ui.deferIsolated, ui.filterInfeasible, ui.monotone, ui.clamp, ui.clampAll, ui.clampAllIter]) {
   el.addEventListener('change', () => runSoon(0));
 }
 ui.reseed.addEventListener('click', () => {

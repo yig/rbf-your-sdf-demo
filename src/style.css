@@ -109,6 +109,7 @@ label.check { display: flex; align-items: center; gap: 5px; color: var(--fg) !im
 }
 .adv-grid { display: grid; grid-template-columns: 1fr max-content; gap: 6px 12px; align-items: center; margin-top: 6px; }
 .adv-grid .span2 { grid-column: span 2; }
+.adv-grid label.check input[type='number'] { width: 48px; padding: 1px 4px; }
 .adv-grid .adv-head { color: var(--muted); font-size: 12px; margin-top: 6px; border-top: 1px solid #e4e4e4; padding-top: 6px; }
 .status {
   margin-left: auto; color: var(--muted); font-size: 12px; min-height: 1.4em; text-align: right;
